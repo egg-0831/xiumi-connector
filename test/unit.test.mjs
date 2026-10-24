@@ -209,22 +209,21 @@ test("replaceImages：无命中时 applied 为空", () => {
 
 /* ---------- 快照 ---------- */
 
-test("快照：保存 / 列表 / 读取 / 裁剪", () => {
+test("快照：同一毫秒连续保存不会互相覆盖", () => {
   const dir = mkdtempSync(join(tmpdir(), "xiumi-snap-"));
   try {
     const { sd } = sampleTree();
+    const files = [];
     for (let i = 0; i < 3; i++) {
       sd.title = `版本${i}`;
-      saveSnapshot(dir, "123", sd, { title: sd.title });
-      // 保证时间戳不同
-      const t = Date.now() + i * 10;
-      while (Date.now() < t) { /* busy wait 极短 */ }
+      files.push(saveSnapshot(dir, "123", sd, { title: sd.title }));
     }
-    const list = listSnapshots(dir, "123");
-    assert.equal(list.length, 3);
+    assert.equal(new Set(files).size, 3, "三次保存应落在三个不同文件");
+    assert.equal(listSnapshots(dir, "123").length, 3);
 
+    // 最新的一份应该是最新写入的「版本2」
     const latest = loadSnapshot(dir, "123", 0);
-    assert.ok(latest.showData.title.startsWith("版本"));
+    assert.equal(latest.showData.title, "版本2");
 
     const dropped = pruneSnapshots(dir, "123", 2);
     assert.equal(dropped, 1);

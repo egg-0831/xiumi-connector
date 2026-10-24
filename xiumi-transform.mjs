@@ -245,8 +245,15 @@ function ensureDir(d) {
  */
 export function saveSnapshot(dir, showId, showData, meta = {}) {
   ensureDir(dir);
-  const ts = new Date().toISOString().replace(/[:.]/g, "-");
-  const file = join(dir, `${showId}__${ts}.json`);
+  // 同一毫秒内连续保存会撞名，这里把时间戳往前顶到第一个空位，
+  // 既不覆盖旧快照，也保持文件名的时间顺序与 listSnapshots 的排序一致。
+  const iso = (ms) => new Date(ms).toISOString().replace(/[:.]/g, "-");
+  let ts = Date.now();
+  let file = join(dir, `${showId}__${iso(ts)}.json`);
+  while (existsSync(file) && ts < Date.now() + 5000) {
+    ts += 1;
+    file = join(dir, `${showId}__${iso(ts)}.json`);
+  }
   writeFileSync(
     file,
     JSON.stringify({ show_id: String(showId), savedAt: new Date().toISOString(), meta, showData }, null, 2),
