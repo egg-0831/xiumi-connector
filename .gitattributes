@@ -1,0 +1,14 @@
+# Windows 批处理必须是 CRLF + ASCII，强制保持
+*.cmd   text eol=crlf
+*.bat   text eol=crlf
+
+# 跨平台脚本与源码统一 LF
+*.sh    text eol=lf
+*.mjs   text eol=lf
+*.json  text eol=lf
+*.md    text eol=lf
+
+# 二进制
+*.png   binary
+*.jpg   binary
+*.zip   binary

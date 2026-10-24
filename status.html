@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>秀米连接器 · 状态</title>
+<style>
+  :root{
+    --bg:#f4f6fb; --card:#ffffff; --line:#e3e6f0; --ink:#1e2333; --muted:#6b7288;
+    --blue:#27408B; --purple:#6C4BA6; --gold:#F5C453;
+    --ok:#1D9E75; --bad:#D9453B; --warn:#BA7517;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:-apple-system,"Segoe UI","Microsoft YaHei",system-ui,sans-serif;
+    background:linear-gradient(160deg,#eef1fa 0%,#f6f4fb 60%,#fbf7ee 100%);
+    color:var(--ink);min-height:100vh;padding:32px 16px;
+  }
+  .wrap{max-width:760px;margin:0 auto}
+  header{display:flex;align-items:center;gap:14px;margin-bottom:22px}
+  .logo{width:46px;height:46px;border-radius:12px;background:var(--blue);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:600;flex:none}
+  header h1{font-size:19px;font-weight:600;letter-spacing:.3px}
+  header p{font-size:13px;color:var(--muted);margin-top:3px}
+  .dot{display:inline-block;width:9px;height:9px;border-radius:50%;vertical-align:middle;margin-right:6px}
+  .dot.ok{background:var(--ok)} .dot.bad{background:var(--bad)} .dot.warn{background:var(--warn)}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 20px;margin-bottom:16px}
+  .card h2{font-size:14px;font-weight:600;color:var(--blue);margin-bottom:14px;
+    display:flex;align-items:center;justify-content:space-between}
+  .banner{border-radius:12px;padding:14px 16px;font-size:14px;display:flex;
+    align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+  .banner.ok{background:#e8f7f1;border:1px solid #b8e6d5;color:#0f6e56}
+  .banner.bad{background:#fdecea;border:1px solid #f5c6c2;color:#a32d2d}
+  .banner .who{font-weight:600}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+  .metric{background:#f7f8fc;border-radius:10px;padding:13px 15px}
+  .metric .k{font-size:12px;color:var(--muted);margin-bottom:6px}
+  .metric .v{font-size:16px;font-weight:600;word-break:break-all}
+  .metric .v.small{font-size:13px;font-weight:500}
+
+  .row{display:flex;align-items:center;gap:10px;padding:9px 0;font-size:13.5px}
+  .row+.row{border-top:1px solid var(--line)}
+  .row .name{flex:1;color:var(--muted)}
+  .row .val{font-weight:500;text-align:right;word-break:break-all}
+  .row .val.ok{color:var(--ok)} .row .val.bad{color:var(--bad)}
+
+  textarea{width:100%;min-height:92px;border:1px solid var(--line);border-radius:10px;
+    padding:11px 13px;font-family:ui-monospace,Consolas,monospace;font-size:12.5px;
+    resize:vertical;outline:none;background:#fafbfe;color:var(--ink)}
+  textarea:focus{border-color:var(--purple);background:#fff}
+  .hint{font-size:12.5px;color:var(--muted);line-height:1.7;margin-bottom:12px}
+  .hint b{color:var(--ink);font-weight:600}
+  .hint code{background:#eef0f8;padding:1px 6px;border-radius:5px;font-size:12px}
+
+  .btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+  button{border:none;border-radius:9px;padding:10px 18px;font-size:13.5px;font-weight:500;
+    cursor:pointer;transition:.15s;font-family:inherit}
+  button.primary{background:var(--blue);color:#fff}
+  button.primary:hover{background:#1d3070}
+  button.ghost{background:#eef0f8;color:var(--ink)}
+  button.ghost:hover{background:#e2e5f2}
+  button:disabled{opacity:.5;cursor:not-allowed}
+
+  .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);
+    background:#1e2333;color:#fff;padding:12px 22px;border-radius:10px;font-size:13.5px;
+    opacity:0;pointer-events:none;transition:.25s;max-width:90vw;text-align:center}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .toast.err{background:var(--bad)} .toast.good{background:var(--ok)}
+
+  .foot{text-align:center;font-size:12px;color:var(--muted);margin-top:8px}
+  .spin{display:inline-block;width:13px;height:13px;border:2px solid #ffffff66;
+    border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite;vertical-align:-2px;margin-right:7px}
+  @keyframes sp{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo">秀</div>
+    <div>
+      <h1>秀米连接器 · 状态面板</h1>
+      <p>本地窗口 · 只在本机 127.0.0.1 运行，Cookie 不会离开你的电脑</p>
+    </div>
+  </header>
+
+  <div id="banner" class="banner bad">
+    <span><span class="dot bad"></span><span id="bannerText">正在检测…</span></span>
+    <button class="ghost" onclick="refresh()">刷新</button>
+  </div>
+
+  <div class="card">
+    <h2>运行环境</h2>
+    <div class="grid">
+      <div class="metric"><div class="k">Node 运行时</div><div class="v small" id="mNode">—</div></div>
+      <div class="metric"><div class="k">操作平台</div><div class="v small" id="mPlatform">—</div></div>
+      <div class="metric"><div class="k">我的作品</div><div class="v" id="mShows">—</div></div>
+      <div class="metric"><div class="k">会话保存时间</div><div class="v small" id="mSaved">—</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>连接检查</h2>
+    <div class="row"><span class="name">会话文件</span><span class="val" id="cSession">—</span></div>
+    <div class="row"><span class="name">账号连通</span><span class="val" id="cAccount">—</span></div>
+    <div class="row"><span class="name">作品接口</span><span class="val" id="cShows">—</span></div>
+    <div class="row"><span class="name">内容 CDN</span><span class="val" id="cCdn">—</span></div>
+  </div>
+
+  <div class="card">
+    <h2>账号</h2>
+    <div class="grid">
+      <div class="metric"><div class="k">昵称</div><div class="v small" id="aNick">—</div></div>
+      <div class="metric"><div class="k">user_sid</div><div class="v small" id="aSid">—</div></div>
+      <div class="metric"><div class="k">unique_uid</div><div class="v small" id="aUid">—</div></div>
+    </div>
+    <div class="btns">
+      <button class="ghost" onclick="openUrl('https://xiumi.us/studio/v5#/paper')">打开编辑器</button>
+      <button class="ghost" onclick="openUrl('https://xiumi.us')">打开秀米首页</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>登录 / 换账号</h2>
+    <p class="hint">
+      1. 浏览器打开 <b>https://xiumi.us</b> 并登录 → 按 <b>F12</b> → <b>Network（网络）</b> → 刷新页面<br>
+      2. 点任意一个对 xiumi.us 的请求 → <b>Request Headers（请求标头）</b> → 复制整串 <code>Cookie</code> 值<br>
+      3. 粘贴到下面输入框，点「登录」
+    </p>
+    <textarea id="cookieBox" placeholder="在这里粘贴整串 Cookie（形如 sid=s%3A...; _ga=GA1.1...）"></textarea>
+    <div class="btns">
+      <button class="primary" id="loginBtn" onclick="doLogin()">登录</button>
+      <button class="ghost" onclick="doLogout()">退出登录（清除 Cookie）</button>
+    </div>
+  </div>
+
+  <p class="foot">秀米连接器 v2.2 · 关掉此页面不影响 WorkBuddy 对话使用</p>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+let busy = false;
+
+function toast(msg, kind) {
+  const t = $("toast");
+  t.textContent = msg;
+  t.className = "toast show" + (kind ? " " + kind : "");
+  clearTimeout(t._tm);
+  t._tm = setTimeout(() => { t.className = "toast"; }, 3200);
+}
+function setRow(id, ok, text) {
+  const el = $(id);
+  el.textContent = text;
+  el.className = "val " + (ok === true ? "ok" : ok === false ? "bad" : "");
+}
+function fmtTime(s) {
+  if (!s) return "—";
+  const d = new Date(s);
+  if (isNaN(d)) return s;
+  return d.toLocaleString("zh-CN", { hour12: false });
+}
+
+async function refresh() {
+  const b = $("bannerText"), ban = $("banner");
+  b.innerHTML = '<span class="spin"></span>正在检测…';
+  ban.className = "banner";
+  try {
+    const r = await fetch("/api/status");
+    const st = await r.json();
+    $("mNode").textContent = st.node || "—";
+    $("mPlatform").textContent = st.platform || "—";
+    $("mShows").textContent = st.showTotal != null ? st.showTotal
+      : (st.showCount != null ? st.showCount : "—");
+    $("mSaved").textContent = fmtTime(st.savedAt);
+    setRow("cSession", st.checks.session, st.checks.session ? "已配置" : "未配置");
+    setRow("cAccount", st.checks.account, st.checks.account ? "正常" : (st.errors.account || "未登录"));
+    setRow("cShows", st.checks.shows, st.checks.shows ? "正常" : (st.errors.shows || "未登录"));
+    setRow("cCdn", st.checks.cdn, st.checks.cdn ? "可达" : (st.errors.cdn || "不可达"));
+    $("aNick").textContent = st.account?.nickname || "—";
+    $("aSid").textContent = st.account?.user_sid || "—";
+    $("aUid").textContent = st.account?.unique_uid || "—";
+    if (st.loggedIn) {
+      ban.className = "banner ok";
+      b.innerHTML = '<span class="dot ok"></span>已连接：<span class="who">' +
+        (st.account?.nickname || "账号") + "</span>　状态正常";
+    } else if (st.checks.session) {
+      ban.className = "banner bad";
+      b.innerHTML = '<span class="dot bad"></span>会话已失效，请在下方重新登录';
+    } else {
+      ban.className = "banner bad";
+      b.innerHTML = '<span class="dot bad"></span>尚未登录，请在下方粘贴 Cookie';
+    }
+  } catch (e) {
+    ban.className = "banner bad";
+    b.innerHTML = '<span class="dot bad"></span>读取状态失败：' + e.message;
+  }
+}
+
+async function doLogin() {
+  if (busy) return;
+  const cookie = $("cookieBox").value.trim();
+  if (!cookie) { toast("请先粘贴 Cookie", "err"); $("cookieBox").focus(); return; }
+  busy = true;
+  const btn = $("loginBtn");
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spin"></span>登录中…';
+  try {
+    const r = await fetch("/api/login", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ cookie }),
+    });
+    const j = await r.json();
+    if (j.ok) {
+      toast("登录成功 ✓ " + (j.account?.nickname || ""), "good");
+      $("cookieBox").value = "";
+      await refresh();
+    } else {
+      toast(j.error || "登录失败", "err");
+    }
+  } catch (e) {
+    toast("登录失败：" + e.message, "err");
+  } finally {
+    busy = false;
+    btn.disabled = false;
+    btn.textContent = "登录";
+  }
+}
+
+async function doLogout() {
+  await fetch("/api/logout", { method: "POST" });
+  toast("已清除本地 Cookie");
+  $("cookieBox").value = "";
+  await refresh();
+}
+
+async function openUrl(url) {
+  try {
+    const r = await fetch("/api/open", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ url }),
+    });
+    const j = await r.json();
+    if (!j.ok) toast(j.error || "打开失败", "err");
+  } catch (e) { toast("打开失败：" + e.message, "err"); }
+}
+
+refresh();
+setInterval(() => { if (!busy) refresh(); }, 15000);
+</script>
+</body>
+</html>

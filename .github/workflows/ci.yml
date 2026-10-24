@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Node ${{ matrix.node }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        node: [18, 20, 22]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node ${{ matrix.node }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Syntax check
+        shell: bash
+        run: |
+          for f in xiumi.mjs xiumi-core.mjs xiumi-market.mjs xiumi-transform.mjs server.mjs status-server.mjs register.mjs; do
+            node --check "$f"
+          done
+
+      - name: Unit + protocol tests
+        shell: bash
+        run: node --test test/*.test.mjs
+
+      - name: CLI smoke test
+        shell: bash
+        run: |
+          node xiumi.mjs help
+          node xiumi.mjs whoami || true
+
+      - name: Windows launcher sanity (ASCII + CRLF)
+        if: runner.os == 'Windows'
+        shell: bash
+        run: |
+          node -e '
+            const fs = require("fs");
+            for (const f of ["install.cmd", "xiumi.cmd", "status.cmd"]) {
+              const buf = fs.readFileSync(f);
+              const nonAscii = [...buf].filter(b => b > 127).length;
+              if (nonAscii) { console.error(`${f} 含非 ASCII 字节 ${nonAscii}`); process.exit(1); }
+              if (!buf.includes(Buffer.from("\r\n"))) { console.error(`${f} 不是 CRLF`); process.exit(1); }
+            }
+            console.log("cmd 文件检查通过");
+          '

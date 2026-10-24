@@ -1,0 +1,18 @@
+# 会话与产物（含 Cookie，绝不提交）
+session.json
+session.json.tmp
+out/
+library/
+cookie.txt
+*.log
+
+# 依赖与系统
+node_modules/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 编辑器
+.vscode/
+.idea/
+*.swp

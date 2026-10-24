@@ -1,0 +1,31 @@
+{
+  "name": "xiumi-connector",
+  "version": "3.0.0",
+  "description": "秀米（xiumi.us）公众号图文排版连接器：搜模板、搬模板、换配色、换图、改文案、发布。零依赖 CLI + MCP 服务器。",
+  "type": "module",
+  "bin": {
+    "xiumi": "./xiumi.mjs"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "start": "node xiumi.mjs help",
+    "mcp": "node server.mjs"
+  },
+  "keywords": ["xiumi", "秀米", "wechat", "公众号", "排版", "mcp", "template"],
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "files": [
+    "xiumi.mjs",
+    "server.mjs",
+    "xiumi-core.mjs",
+    "xiumi-market.mjs",
+    "xiumi-transform.mjs",
+    "status-server.mjs",
+    "status.html",
+    "SKILL.md",
+    "references",
+    "examples"
+  ]
+}
