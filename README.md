@@ -4,6 +4,7 @@
 
 **找模板 → 体检 → 搬到自己账号 → 换配色 → 换图 → 改文案 → 出预览**，全流程一条命令一步。
 
+[![CI](https://github.com/egg-0831/xiumi-connector/actions/workflows/ci.yml/badge.svg)](https://github.com/egg-0831/xiumi-connector/actions/workflows/ci.yml)
 [![Node](https://img.shields.io/badge/node-%3E%3D18-brightgreen)](https://nodejs.org)
 [![deps](https://img.shields.io/badge/dependencies-0-blue)](package.json)
 [![tools](https://img.shields.io/badge/MCP%20tools-34-orange)](server.mjs)
