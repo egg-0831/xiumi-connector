@@ -219,6 +219,8 @@ node xiumi.mjs publish <新ID>
 
 Windows 下也可直接跑 `install.cmd` 自动写入 `%USERPROFILE%\.workbuddy\mcp.json`。
 
+如需与官方云 MCP（`https://xiumi.us/mcp`，`mcp__秀米__*`）并用，或做一键排版后的精细排版，见 [references/official-mcp-and-ai-layout.md](references/official-mcp-and-ai-layout.md)。两套工具名不冲突，可以同时挂载。
+
 ---
 
 ## 八、边界与合规

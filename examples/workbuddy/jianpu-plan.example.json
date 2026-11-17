@@ -1,0 +1,29 @@
+{
+  "_note": "占位示例：ID / SID / 文本均为虚构。body_9 演示用单个 text + \\n 保留段落，而不是 8+9+10 合并。",
+  "show_id": "<样刊作品ID>",
+  "type": "paper",
+  "plan": "JIANPU 2\nlayout_1\n  body_1 = 0\nlayout_2\n  body_2 = 1\nlayout_3\n  body_3 = 2\n  body_4 = 3\nlayout_5\nlayout_6\n  body_6 = 5\n  body_7 = 6\nlayout_8\n  body_8 = 7\n  body_9 = 8\nlayout_6[2]\n  body_6 = 9\n  body_7 = 10\nlayout_8[2]\n  body_8 = 11\n  body_9 = 12",
+  "material": {
+    "content_items": [
+      { "index": 0, "type": "text", "text": "栏目 / 年份 / 主题" },
+      { "index": 1, "type": "text", "text": "对仗主标题" },
+      { "index": 2, "type": "text", "text": "序章小标题" },
+      { "index": 3, "type": "text", "text": "章节小标题" },
+      { "index": 4, "type": "text", "text": "尾声小标题" },
+      { "index": 5, "type": "text", "text": "卷首语副标题" },
+      { "index": 6, "type": "text", "text": "卷首语引言" },
+      { "index": 7, "type": "text", "text": "PART 01" },
+      { "index": 8, "type": "text", "text": "第一段正文\n第二段正文\n第三段正文" },
+      { "index": 9, "type": "text", "text": "英文点缀" },
+      { "index": 10, "type": "text", "text": "PART 02" },
+      { "index": 11, "type": "text", "text": "章节领句" },
+      { "index": 12, "type": "text", "text": "更多正文\n下一段正文" }
+    ]
+  },
+  "spec_version": "<从 get_show_fragment_spec 获取>",
+  "dry_run": true,
+  "work": {
+    "title": "成品作品标题占位",
+    "desc": "成品描述占位"
+  }
+}

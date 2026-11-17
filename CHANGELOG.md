@@ -2,6 +2,21 @@
 
 格式参考 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，版本号遵循 [SemVer](https://semver.org/lang/zh-CN/)。
 
+## [Unreleased]
+
+### 新增 · 官方 MCP 与 AI 排版实战
+
+- `references/official-mcp-and-ai-layout.md`：官方云 MCP 与本地连接器并存的配置方法；JIANPU 2 一键排版的槽位/换行/装饰坑；showdata 精细排版流程；跨作品搬组件、占位图、预览验证与设计准则。
+- `scripts/workbuddy/cdp-preview.mjs`：基于 Chrome/Edge DevTools Protocol 的真实渲染抓取（几何数据 + 整页/分屏截图），用于验证换行与装饰是否生效。
+- `scripts/workbuddy/showdata-style.py`：只改 `<p>` style 的通用脚本，改前改后做纯文本逐字断言；附 `clone_with_new_uuids` 供跨作品搬组件使用。
+- `scripts/workbuddy/secret_scan.py`：提交前的轻量敏感信息检查（Cookie / Token / 本机路径）。
+- `examples/workbuddy/`：一键排版 plan、样式规则、极简照片占位图示例。
+
+### 变更
+
+- README 增加「与官方 MCP / AI Agent 配合」一节与目录条目。
+- `.gitignore` 增加 Python 缓存目录 `__pycache__/` 与 `*.pyc`。
+
 ## [3.0.0] - 2026-10-25
 
 从「能读写作品」升级到「能把别人的模板变成自己的」。

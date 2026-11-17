@@ -189,6 +189,20 @@ Windows 也可以直接运行 `install.cmd`，自动写入 `%USERPROFILE%\.workb
 
 ---
 
+## 与官方 MCP / AI Agent 配合
+
+官方云 MCP（`https://xiumi.us/mcp`，工具前缀 `mcp__秀米__*`）负责账号、图库与一键排版；本仓库的本地连接器负责内容树级精修。两套通道可并存，工具名不冲突。配置方法、JIANPU 2 槽位规则、showdata 精修、跨作品搬组件与踩坑清单见 [references/official-mcp-and-ai-layout.md](references/official-mcp-and-ai-layout.md)。
+
+可复用工具：
+
+- `scripts/workbuddy/cdp-preview.mjs` —— 抓真实渲染 DOM 与分屏截图，验证换行、占位图与装饰是否生效
+- `scripts/workbuddy/showdata-style.py` —— 只改 `<p>` 的 style，附带文字逐字断言
+- `scripts/workbuddy/secret_scan.py` —— 提交前检查 Cookie、Token、本机路径
+
+示例在 `examples/workbuddy/`。
+
+---
+
 ## 目录
 
 ```
@@ -201,8 +215,10 @@ xiumi-connector/
 ├── status-server.mjs    本地状态面板后端
 ├── status.html          状态面板界面
 ├── install.cmd|sh       一键注册 MCP
-├── references/          接口细节、配方
+├── references/          接口细节、配方、官方 MCP 实战
+├── scripts/workbuddy/   CDP 预览 / showdata 样式 / 敏感扫描
 ├── examples/            示例 blocks / 补丁
+│   └── workbuddy/       一键排版与样式规则示例
 └── test/                单元测试 + 协议测试
 ```
 

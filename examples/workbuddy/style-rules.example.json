@@ -1,0 +1,41 @@
+{
+  "rules": [
+    {
+      "id": "prologue",
+      "match_all": ["卷首语标识", "示例诗句首句"],
+      "styles": [
+        { "align": "center", "size": "100%", "bold": true, "color": "#2E4260", "mb": 24 },
+        { "align": "center", "size": "96%", "color": "#2E4260", "mb": 28 },
+        { "align": "center", "size": "100%", "bold": true, "color": "#2E4260", "mb": 22 },
+        { "align": "center", "size": "100%", "bold": true, "color": "#E9651F", "mb": 22 }
+      ]
+    },
+    {
+      "id": "chapter-lead",
+      "match_all": ["示例章节首句"],
+      "index_styles": {
+        "0": { "align": "left", "size": "100%", "bold": true, "color": "#E9651F", "mb": 18 },
+        "1": { "align": "left", "size": "100%", "bold": true, "color": "#2E4260", "mb": 20 }
+      }
+    },
+    {
+      "id": "awards",
+      "match_all": ["荣耀时刻", "硕士生"],
+      "styles": [
+        { "align": "left", "size": "100%", "bold": true, "color": "#E9651F", "mb": 12 }
+      ],
+      "index_styles": {
+        "2": { "align": "left", "size": "96%", "bold": true, "color": "#2E4260", "mb": 10, "bg": "#F2F5F9", "pad": "8px 12px" },
+        "3": { "align": "left", "size": "96%", "bold": true, "color": "#2E4260", "mb": 10, "bg": "#F2F5F9", "pad": "8px 12px" }
+      }
+    },
+    {
+      "id": "epilogue",
+      "match_all": ["愿你们："],
+      "index_styles": {
+        "0": { "align": "center", "size": "108%", "bold": true, "color": "#E9651F", "mb": 20 },
+        "1": { "align": "center", "size": "106%", "bold": true, "color": "#2E4260", "mb": 18 }
+      }
+    }
+  ]
+}
