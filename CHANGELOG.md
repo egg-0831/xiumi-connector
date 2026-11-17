@@ -4,6 +4,8 @@
 
 ## [Unreleased]
 
+## [3.1.0] - 2026-11-17
+
 ### 新增 · 官方 MCP 与 AI 排版实战
 
 - `references/official-mcp-and-ai-layout.md`：官方云 MCP 与本地连接器并存的配置方法；JIANPU 2 一键排版的槽位/换行/装饰坑；showdata 精细排版流程；跨作品搬组件、占位图、预览验证与设计准则。
@@ -69,4 +71,5 @@
 
 - 首个可用版本：会话管理、作品读取、内容树读写、模板市场、本地素材库。
 
+[3.1.0]: https://github.com/egg-0831/xiumi-connector/compare/v3.0.0...v3.1.0
 [3.0.0]: https://github.com/egg-0831/xiumi-connector/compare/v2.2.0...v3.0.0

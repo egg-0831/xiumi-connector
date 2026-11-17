@@ -7,6 +7,7 @@
 [![CI](https://github.com/egg-0831/xiumi-connector/actions/workflows/ci.yml/badge.svg)](https://github.com/egg-0831/xiumi-connector/actions/workflows/ci.yml)
 [![Node](https://img.shields.io/badge/node-%3E%3D18-brightgreen)](https://nodejs.org)
 [![deps](https://img.shields.io/badge/dependencies-0-blue)](package.json)
+[![version](https://img.shields.io/badge/version-3.1.0-blue)](package.json)
 [![tools](https://img.shields.io/badge/MCP%20tools-34-orange)](server.mjs)
 [![license](https://img.shields.io/badge/license-MIT-lightgrey)](LICENSE)
 
